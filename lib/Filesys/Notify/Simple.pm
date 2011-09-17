@@ -105,13 +105,7 @@ sub wait_kqueue {
         path => \@path
     );
 
-    return sub {
-        my $cb = shift;
-
-        my $events = $kqueue->get_events;
-        $events = $kqueue->get_events until(@$events);
-        $cb->(@$events);
-    };
+    return sub { $kqueue->wait(shift) };
 }
 
 sub wait_timer {
